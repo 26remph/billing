@@ -5,7 +5,7 @@ from pydantic_settings import BaseSettings
 from billing.provider.abstract import AbstractPayment
 from billing.provider.yapay.client import ApiClient
 from billing.schemas.yapay.operation import OperationResponse
-from billing.schemas.yapay.order.request import OrderRequestModel
+from billing.schemas.yapay.order.request import OrderRequest
 from billing.schemas.yapay.order.response import OrderResponse, CreateOrderResponse
 
 
@@ -21,7 +21,7 @@ class YandexPayment(AbstractPayment):
         self.endpoint_cfg = endpoint_cfg
 
     async def create(
-        self, model: OrderRequestModel, idempotency_key: str = None
+        self, model: OrderRequest, idempotency_key: str = None
     ) -> CreateOrderResponse:
         url = self.endpoint_cfg.order_create_url
         dump = model.model_dump(mode="json", exclude_none=True)

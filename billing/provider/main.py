@@ -9,7 +9,7 @@ from billing.provider.yapay.payment import YandexPayment, PaymentInfoType
 from billing.schemas.yapay.cart import RenderedCartItem, CartTotal, RenderedCart
 from billing.schemas.yapay.common import PayMethod, CurrencyCode
 from billing.schemas.yapay.item import ItemQuantity
-from billing.schemas.yapay.order.request import MerchantRedirectUrls, OrderRequestModel
+from billing.schemas.yapay.order.request import MerchantRedirectUrls, OrderRequest
 
 
 async def main():
@@ -41,7 +41,7 @@ if __name__ == "__main__":
     config = get_provider_settings(ProviderType.yapay)
 
     # Здесь создаем модель руками. В дальнейшем ее можно получить из PaymentApi
-    # указав request_model == OrderRequestModel
+    # указав request_model == OrderRequest
     redirect_urls = MerchantRedirectUrls(
         onError=config.redirect_on_error_url, onSuccess=config.redirect_on_success_url
     )
@@ -51,7 +51,7 @@ if __name__ == "__main__":
     )
     cart = RenderedCart(items=[item], total=CartTotal(amount=1560.00))
 
-    order = OrderRequestModel(
+    order = OrderRequest(
         availablePaymentMethods=PayMethod.CARD,
         cart=cart,
         currencyCode=CurrencyCode.RUB,
@@ -59,7 +59,7 @@ if __name__ == "__main__":
         redirectUrls=redirect_urls,
     )
 
-    # print(order.model_dump_json(indent=2, exclude_none=True))
+    print(order.model_dump_json(indent=2, exclude_none=True))
 
     loop = asyncio.new_event_loop()
     asyncio.set_event_loop(loop)

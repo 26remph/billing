@@ -1,6 +1,8 @@
 
 from pydantic import BaseModel, UUID4
 
+from billing.config.utils import get_provider_settings
+from billing.provider.common import ProviderType
 from billing.schemas.yapay.cart import RenderedCart
 from billing.schemas.yapay.common import PayMethod, CurrencyCode
 
@@ -37,7 +39,7 @@ class MerchantRedirectUrls(BaseModel):
     onSuccess: str
 
 
-class OrderRequestModel(BaseModel):
+class OrderRequest(BaseModel):
     """Основная модель запроса.
 
     :attribute
@@ -59,3 +61,5 @@ class OrderRequestModel(BaseModel):
     purpose: str = None
     redirectUrls: MerchantRedirectUrls
     ttl: int = 1800
+
+
