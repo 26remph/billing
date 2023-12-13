@@ -1,0 +1,335 @@
+{
+    "code": 200,
+    "data": {
+        "delivery": {
+            "actualPrice": "123.45",
+            "created": "2022-12-29T18:02:01Z",
+            "price": "123.45",
+            "status": "NEW",
+            "updated": "2022-12-29T18:02:01Z"
+        },
+        "operations": [
+            {
+                "amount": "123.45",
+                "approvalCode": "string",
+                "created": "2022-12-29T18:02:01Z",
+                "externalOperationId": "string",
+                "operationId": "c3073b9d-edd0-49f2-a28d-b7ded8ff9a8b",
+                "operationType": "AUTHORIZE",
+                "orderId": "string",
+                "params": {},
+                "reason": "string",
+                "status": "PENDING",
+                "updated": "2022-12-29T18:02:01Z"
+            }
+        ],
+        "order": {
+            "cart": {
+                "cartId": "string",
+                "coupons": [
+                    {
+                        "description": "string",
+                        "status": "VALID",
+                        "value": "string"
+                    }
+                ],
+                "discounts": [
+                    {
+                        "amount": "123.45",
+                        "description": "string",
+                        "discountId": "string"
+                    }
+                ],
+                "externalId": "string",
+                "items": [
+                    {
+                        "discountedUnitPrice": "123.45",
+                        "finalPrice": "123.45",
+                        "measurements": {
+                            "height": 0,
+                            "length": 0,
+                            "weight": 0,
+                            "width": 0
+                        },
+                        "productId": "string",
+                        "quantity": {
+                            "available": "123.45",
+                            "count": "123.45",
+                            "label": "string"
+                        },
+                        "receipt": {
+                            "agent": {
+                                "agentType": 1,
+                                "operation": "string",
+                                "paymentsOperator": {
+                                    "phones": [
+                                        "string"
+                                    ]
+                                },
+                                "phones": [
+                                    "string"
+                                ],
+                                "transferOperator": {
+                                    "address": "string",
+                                    "inn": "string",
+                                    "name": "string",
+                                    "phones": [
+                                        "string"
+                                    ]
+                                }
+                            },
+                            "excise": "123.45",
+                            "markQuantity": {
+                                "denominator": 0,
+                                "numerator": 0
+                            },
+                            "measure": 0,
+                            "paymentMethodType": 1,
+                            "paymentSubjectType": 1,
+                            "productCode": "string",
+                            "supplier": {
+                                "inn": "string",
+                                "name": "string",
+                                "phones": [
+                                    "string"
+                                ]
+                            },
+                            "tax": 1,
+                            "title": "string"
+                        },
+                        "subtotal": "123.45",
+                        "title": "string",
+                        "total": "123.45",
+                        "type": "PHYSICAL",
+                        "unitPrice": "123.45"
+                    }
+                ],
+                "measurements": {
+                    "height": 0,
+                    "length": 0,
+                    "weight": 0,
+                    "width": 0
+                },
+                "total": {
+                    "amount": "123.45",
+                    "label": "string"
+                }
+            },
+            "created": "2022-12-29T18:02:01Z",
+            "currencyCode": "RUB",
+            "merchantId": "c3073b9d-edd0-49f2-a28d-b7ded8ff9a8b",
+            "metadata": "string",
+            "orderAmount": "123.45",
+            "orderId": "string",
+            "paymentMethod": {
+                "cardLast4": "string",
+                "cardNetwork": "AMEX",
+                "methodType": "CARD"
+            },
+            "paymentStatus": "PENDING",
+            "paymentUrl": "string",
+            "reason": "string",
+            "shippingMethod": {
+                "courierOption": {
+                    "allowedPaymentMethods": [
+                        "CARD"
+                    ],
+                    "amount": "123.45",
+                    "category": "EXPRESS",
+                    "courierOptionId": "string",
+                    "customerChoice": {
+                        "date": "string",
+                        "time": {
+                            "end": "string",
+                            "start": "string"
+                        }
+                    },
+                    "fromDate": "string",
+                    "fromTime": "string",
+                    "provider": "BOXBERRY",
+                    "receipt": {
+                        "agent": {
+                            "agentType": 1,
+                            "operation": "string",
+                            "paymentsOperator": {
+                                "phones": [
+                                    "string"
+                                ]
+                            },
+                            "phones": [
+                                "string"
+                            ],
+                            "transferOperator": {
+                                "address": "string",
+                                "inn": "string",
+                                "name": "string",
+                                "phones": [
+                                    "string"
+                                ]
+                            }
+                        },
+                        "excise": "123.45",
+                        "markQuantity": {
+                            "denominator": 0,
+                            "numerator": 0
+                        },
+                        "measure": 0,
+                        "paymentMethodType": 1,
+                        "paymentSubjectType": 1,
+                        "productCode": "string",
+                        "supplier": {
+                            "inn": "string",
+                            "name": "string",
+                            "phones": [
+                                "string"
+                            ]
+                        },
+                        "tax": 1,
+                        "title": "string"
+                    },
+                    "timeIntervals": {
+                        "grid": {
+                            "duration": "string",
+                            "end": "string",
+                            "start": "string",
+                            "step": "string"
+                        },
+                        "type": "GRID",
+                        "values": [
+                            {
+                                "end": "string",
+                                "start": "string"
+                            }
+                        ]
+                    },
+                    "title": "string",
+                    "toDate": "string",
+                    "toTime": "string",
+                    "type": "PLAIN"
+                },
+                "methodType": "DIRECT",
+                "pickupOption": {
+                    "address": "string",
+                    "allowedPaymentMethods": [
+                        "CARD"
+                    ],
+                    "amount": "123.45",
+                    "description": "string",
+                    "fromDate": "string",
+                    "location": {
+                        "latitude": 0,
+                        "longitude": 0
+                    },
+                    "phones": [
+                        "string"
+                    ],
+                    "pickupPointId": "string",
+                    "provider": "YANDEX_MARKET",
+                    "receipt": {
+                        "agent": {
+                            "agentType": 1,
+                            "operation": "string",
+                            "paymentsOperator": {
+                                "phones": [
+                                    "string"
+                                ]
+                            },
+                            "phones": [
+                                "string"
+                            ],
+                            "transferOperator": {
+                                "address": "string",
+                                "inn": "string",
+                                "name": "string",
+                                "phones": [
+                                    "string"
+                                ]
+                            }
+                        },
+                        "excise": "123.45",
+                        "markQuantity": {
+                            "denominator": 0,
+                            "numerator": 0
+                        },
+                        "measure": 0,
+                        "paymentMethodType": 1,
+                        "paymentSubjectType": 1,
+                        "productCode": "string",
+                        "supplier": {
+                            "inn": "string",
+                            "name": "string",
+                            "phones": [
+                                "string"
+                            ]
+                        },
+                        "tax": 1,
+                        "title": "string"
+                    },
+                    "schedule": [
+                        {
+                            "fromTime": "string",
+                            "label": "string",
+                            "toTime": "string"
+                        }
+                    ],
+                    "storagePeriod": 0,
+                    "title": "string",
+                    "toDate": "string"
+                },
+                "yandexDeliveryOption": {
+                    "allowedPaymentMethods": [
+                        "CARD"
+                    ],
+                    "amount": "123.45",
+                    "category": "EXPRESS",
+                    "fromDatetime": "2022-12-29T18:02:01Z",
+                    "receipt": {
+                        "agent": {
+                            "agentType": 1,
+                            "operation": "string",
+                            "paymentsOperator": {
+                                "phones": [
+                                    "string"
+                                ]
+                            },
+                            "phones": [
+                                "string"
+                            ],
+                            "transferOperator": {
+                                "address": "string",
+                                "inn": "string",
+                                "name": "string",
+                                "phones": [
+                                    "string"
+                                ]
+                            }
+                        },
+                        "excise": "123.45",
+                        "markQuantity": {
+                            "denominator": 0,
+                            "numerator": 0
+                        },
+                        "measure": 0,
+                        "paymentMethodType": 1,
+                        "paymentSubjectType": 1,
+                        "productCode": "string",
+                        "supplier": {
+                            "inn": "string",
+                            "name": "string",
+                            "phones": [
+                                "string"
+                            ]
+                        },
+                        "tax": 1,
+                        "title": "string"
+                    },
+                    "title": "string",
+                    "toDatetime": "2022-12-29T18:02:01Z",
+                    "yandexDeliveryOptionId": "string"
+                }
+            },
+            "updated": "2022-12-29T18:02:01Z"
+        }
+    },
+    "status": "success"
+}

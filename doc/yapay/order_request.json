@@ -1,0 +1,85 @@
+{
+    "availablePaymentMethods": null,
+    "cart": {
+        "externalId": "string",
+        "items": [
+            {
+                "discountedUnitPrice": "123.45",
+                "productId": "string",
+                "quantity": {
+                    "available": "123.45",
+                    "count": "123.45",
+                    "label": "string"
+                },
+                "receipt": {
+                    "agent": {
+                        "agentType": 1,
+                        "operation": "string",
+                        "paymentsOperator": {
+                            "phones": [
+                                "string"
+                            ]
+                        },
+                        "phones": [
+                            "string"
+                        ],
+                        "transferOperator": {
+                            "address": "string",
+                            "inn": "string",
+                            "name": "string",
+                            "phones": [
+                                "string"
+                            ]
+                        }
+                    },
+                    "excise": "123.45",
+                    "markQuantity": {
+                        "denominator": 0,
+                        "numerator": 0
+                    },
+                    "measure": 0,
+                    "paymentMethodType": 1,
+                    "paymentSubjectType": 1,
+                    "productCode": "string",
+                    "supplier": {
+                        "inn": "string",
+                        "name": "string",
+                        "phones": [
+                            "string"
+                        ]
+                    },
+                    "tax": 1,
+                    "title": "string"
+                },
+                "subtotal": "123.45",
+                "title": "string",
+                "total": "123.45",
+                "unitPrice": "123.45"
+            }
+        ],
+        "total": {
+            "amount": "123.45",
+            "label": "string"
+        }
+    },
+    "currencyCode": "RUB",
+    "extensions": {
+        "billingReport": {
+            "branchId": null,
+            "managerId": null
+        },
+        "qrData": {
+            "token": "string"
+        },
+        "smsOffer": {
+            "phone": "string"
+        }
+    },
+    "orderId": "string",
+    "purpose": "string",
+    "redirectUrls": {
+        "onError": "string",
+        "onSuccess": "string"
+    },
+    "ttl": 1800
+}

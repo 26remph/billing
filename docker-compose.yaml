@@ -1,0 +1,111 @@
+version: '3.8'
+
+x-default: &default
+  restart: unless-stopped
+  networks:
+    - overlay
+  env_file:
+    - .env
+
+x-py-build: &py-build
+  build:
+    context: .
+    dockerfile: ./deploy/workers/Dockerfile
+
+x-healthcheck-interval: &hc-interval
+  interval: 2s
+  retries: 10
+  timeout: 10s
+
+x-celery-default: &celery-default
+  << : [ *default, *py-build ]
+  depends_on:
+    - rabbitmq
+    - redis
+#    backend:
+#      condition: service_healthy
+
+x-celery-worker-default: &celery-worker-default
+  <<: *celery-default
+  healthcheck:
+    <<: *hc-interval
+    test: [ "CMD-SHELL", "python -m celery inspect ping -d celery@$$HOSTNAME" ]
+
+
+
+services:
+  postgres:
+    <<: *default
+    image: postgres:13
+    ports:
+      - "5432:5432"
+    volumes:
+      - db_data:/var/lib/postgresql/data/
+    healthcheck:
+      <<: *hc-interval
+      test: [ "CMD-SHELL", "pg_isready -d $$POSTGRES_DB -U $$POSTGRES_USER"]
+
+  mongodb:
+    <<: *default
+    image: mongodb/mongodb-community-server:6.0-ubi8
+#    environment:
+#      - MONGO_INITDB_ROOT_USERNAME=user
+#      - MONGO_INITDB_ROOT_PASSWORD=pass
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongodb:/data/db
+
+  rabbitmq:
+    <<: *default
+    hostname: rabbitmq
+    image: rabbitmq:3.11.18-management
+    ports:
+      - "15672:15672"
+      - "5672:5672"
+    volumes:
+      - rabbitmq:/var/lib/rabbitmq
+
+  redis:
+    <<: *default
+    image: redis:7.0
+    ports:
+      - "6379:6379"
+    healthcheck:
+      <<: *hc-interval
+      test: [ "CMD-SHELL", "redis-cli", "ping" ]
+    depends_on:
+      - rabbitmq
+
+
+  celery_enrich:
+    hostname: enrich
+    <<: *celery-worker-default
+    command: [ "python", "-m", "celery", "-A", "notify.extensions.celery_app", "worker", "-Q", "q_enrich_msg", "-l", "info" ]
+
+
+  celery_send_email:
+    hostname: send_email
+    <<: *celery-worker-default
+    command: [ "python", "-m", "celery", "-A", "notify.extensions.celery_app", "worker", "-Q", "q_send_mail", "--concurrency", "2", "-l", "info" ]
+
+#  celery_beat:
+#    <<: *celery-default
+#    command: [ "python", "-m", "celery", "-A", "notify.extensions.celery_app", "beat" ]
+
+  celery_flower:
+    <<: *celery-default
+    ports:
+      - "5555:5555"
+    command: [ "python", "-m", "celery", "-A", "notify.extensions.celery_app", "flower" ]
+    healthcheck:
+      <<: *hc-interval
+      test: [ "CMD-SHELL", "curl --fail http://localhost:5555/metrics || exit 1" ]
+
+volumes:
+  db_data:
+  rabbitmq:
+  mongodb:
+
+networks:
+  overlay:

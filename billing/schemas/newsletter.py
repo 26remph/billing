@@ -1,0 +1,2 @@
+class NewsLetterRequest:
+    pass
