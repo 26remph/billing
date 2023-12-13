@@ -1,14 +1,16 @@
 import pprint
 import uuid
+from typing import Annotated
 
-from fastapi import APIRouter, Body, Depends
+from fastapi import APIRouter, Body, Depends, Path
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from billing.config import get_settings
 from billing.db.connection import get_session
 from billing.endpoints.examples.request import create_order_example
 from billing.provider.utils import get_provider
-from billing.provider.yapay.payment import YandexPayment
+from billing.provider.yapay.payment import YandexPayment, PaymentInfoType
+from billing.schemas.yapay.operation import OperationResponse
 from billing.schemas.yapay.order.request import OrderRequest
 from billing.schemas.yapay.order.response import OrderResponse, CreateOrderResponse
 
@@ -37,5 +39,21 @@ async def create(
         pprint.pprint(response.model_dump(mode="json"))
 
     return response
+
+
+@api_router.get("/info/order/{order_id}", response_model=OrderResponse)
+async def get_order_info(
+        order_id: uuid.UUID = Path(...),
+        provider: Annotated[YandexPayment, Depends(get_provider)] = None
+):
+    return await provider.payment_info(str(order_id), typeinfo=PaymentInfoType.ORDER)
+
+
+@api_router.get("/info/operation_info/{external_operation_id}", response_model=OperationResponse)
+async def get_operation_info(
+    external_operation_id: uuid.UUID = Path(...),
+    provider: Annotated[YandexPayment, Depends(get_provider)] = None
+):
+    return await provider.payment_info(str(external_operation_id), typeinfo=PaymentInfoType.OPERATION)
 
 

@@ -23,16 +23,16 @@ class OperationStatus(Enum):
 
 class Operation(BaseModel):
     amount: float
-    approvalCode: str = None
-    created: datetime.datetime = None
-    externalOperationId: str
+    approvalCode: str | None = None
+    created: datetime.datetime | None = None
+    externalOperationId: str | None = None
     operationId: UUID4
     operationType: OperationType
     orderId: UUID4
-    params: Dict[str, Any] = None
-    reason: str = None
+    params: Dict[str, Any] | None = None
+    reason: str | None = None
     status: OperationStatus = OperationStatus.PENDING
-    updated: str = None
+    updated: str | None = None
 
 
 class OperationResponseData(BaseModel):

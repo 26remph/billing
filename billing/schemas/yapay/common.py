@@ -47,3 +47,4 @@ class CurrencyCode(str, Enum):
 
 class ResponseStatus(str, Enum):
     SUCCESS = "success"
+    FAIL = "fail"
