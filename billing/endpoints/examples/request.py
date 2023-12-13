@@ -1,12 +1,11 @@
 import uuid
 
-from billing.config.default import YandexPaySettings
 from billing.config.utils import get_provider_settings
 from billing.provider.common import ProviderType
 
-yapay_cfg: YandexPaySettings = get_provider_settings(ProviderType.yapay)
+yapay_cfg = get_provider_settings(ProviderType.yapay)
 
-create_order = {
+create_order_example = {
     "availablePaymentMethods": "CARD",
     "cart": {
         "items": [

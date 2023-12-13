@@ -6,6 +6,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from billing.config import get_settings
 from billing.db.connection import get_session
+from billing.endpoints.examples.request import create_order_example
 from billing.provider.utils import get_provider
 from billing.provider.yapay.payment import YandexPayment
 from billing.schemas.yapay.order.request import OrderRequest
@@ -17,7 +18,7 @@ settings = get_settings()
 
 @api_router.post("/pay", response_model=CreateOrderResponse)
 async def create(
-        model: OrderRequest = Body(..., example={}),
+        model: OrderRequest = Body(..., example=create_order_example),
         session: AsyncSession = Depends(get_session),
         provider: YandexPayment = Depends(get_provider)
 ):
