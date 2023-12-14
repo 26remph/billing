@@ -16,8 +16,8 @@ from billing.schemas.yapay.order.request import OrderRequest
 from billing.schemas.yapay.order.response import OrderResponse, CreateOrderResponse
 from billing.schemas.yapay.webhook import WebhookV1Request, Event
 
-api_router = APIRouter(tags=["Yandex payment provider"])
-settings = get_settings()
+api_router = APIRouter(tags=["Yandex provider"])
+# settings = get_settings()
 
 
 @api_router.post("/pay", response_model=CreateOrderResponse)

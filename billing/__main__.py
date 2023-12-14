@@ -7,7 +7,7 @@ from uvicorn import run
 
 from billing.config import DefaultSettings
 from billing.config.utils import get_settings
-from billing.db.models.models_view import TemplateStaticAdmin, TaskAdmin, ContentAdmin, ContentUserAdmin, \
+from billing.db.models.view import TemplateStaticAdmin, TaskAdmin, ContentAdmin, ContentUserAdmin, \
     SubscriberChanelAdmin
 from billing.endpoints import list_of_routes
 from billing.utils.common import get_hostname
@@ -32,7 +32,7 @@ def get_app() -> FastAPI:
     tags_metadata = [
         {"name": "Content", "description": "CRUD operation with content."},
         {
-            "name": "Yandex payment provider",
+            "name": "Yandex provider",
             "description": "Yandex pay provider workflow.",
         },
         {"name": "Mailing list", "description": "CRUD operation create mailing list for content."},
@@ -42,7 +42,7 @@ def get_app() -> FastAPI:
     ]
 
     application = FastAPI(
-        title="Newsletter",
+        title="Billing",
         description=description,
         docs_url="/swagger",
         openapi_url="/openapi",

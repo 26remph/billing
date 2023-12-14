@@ -31,8 +31,6 @@ x-celery-worker-default: &celery-worker-default
     <<: *hc-interval
     test: [ "CMD-SHELL", "python -m celery inspect ping -d celery@$$HOSTNAME" ]
 
-
-
 services:
   postgres:
     <<: *default
