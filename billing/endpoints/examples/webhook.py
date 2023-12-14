@@ -4,7 +4,7 @@ from billing.schemas.yapay.operation import OperationStatus
 from billing.schemas.yapay.webhook import Event
 
 webhook_example = {
-    "event": Event,
+    "event": Event.OPERATION_STATUS_UPDATED,
     "eventTime": datetime.datetime.now(),
     "merchantId": "c3073b9d-edd0-49f2-a28d-b7ded8ff9a8b",
     "operation": {
