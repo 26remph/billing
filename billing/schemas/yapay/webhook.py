@@ -12,10 +12,10 @@ from billing.schemas.yapay.subscription import Subscription
 
 
 class Event(str, Enum):
-    TRANSACTION_STATUS_UPDATE = 'TRANSACTION_STATUS_UPDATE'
-    ORDER_STATUS_UPDATED = 'ORDER_STATUS_UPDATED'
-    OPERATION_STATUS_UPDATED = 'OPERATION_STATUS_UPDATED'
-    SUBSCRIPTION_STATUS_UPDATED = 'SUBSCRIPTION_STATUS_UPDATED'
+    TRANSACTION_STATUS_UPDATE = "TRANSACTION_STATUS_UPDATE"
+    ORDER_STATUS_UPDATED = "ORDER_STATUS_UPDATED"
+    OPERATION_STATUS_UPDATED = "OPERATION_STATUS_UPDATED"
+    SUBSCRIPTION_STATUS_UPDATED = "SUBSCRIPTION_STATUS_UPDATED"
 
 
 class OperationWebhookData(BaseModel):
@@ -36,7 +36,7 @@ class OrderWebhookData(BaseModel):
     paymentStatus: Optional[PaymentStatus] = Field(None, description='Статус заказа')
 
 
-class MerchantWebhookV1Request(BaseModel):
+class WebhookV1Request(BaseModel):
     event: Event
     eventTime: datetime = Field(
         ..., description='время события в формате `RFC 3339`; `YYYY-MM-DDThh:mm:ssTZD`'

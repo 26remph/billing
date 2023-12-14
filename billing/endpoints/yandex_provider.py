@@ -8,11 +8,13 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from billing.config import get_settings
 from billing.db.connection import get_session
 from billing.endpoints.examples.request import create_order_example
+from billing.endpoints.examples.webhook import webhook_example
 from billing.provider.utils import get_provider
 from billing.provider.yapay.payment import YandexPayment, PaymentInfoType
 from billing.schemas.yapay.operation import OperationResponse
 from billing.schemas.yapay.order.request import OrderRequest
 from billing.schemas.yapay.order.response import OrderResponse, CreateOrderResponse
+from billing.schemas.yapay.webhook import WebhookV1Request, Event
 
 api_router = APIRouter(tags=["Yandex payment provider"])
 settings = get_settings()
@@ -27,8 +29,10 @@ async def create(
     """Логика работы ручки:
 
     Делаем запись в бэкэнд платежной системы, в случае успешного ответа:
-        - возвращаем ссылку на оплату и статус ответа.
+        - получаем ссылку на оплату и статус ответа.
+        - получаем текущее состояние заказа для записи в базу
         - записываем в базу биллинга информацию о платежной операции
+        - возвращаем ссылку на оплату
     """
 
     request_id = str(uuid.uuid4())
@@ -41,13 +45,22 @@ async def create(
     return response
 
 
-@api_router.post("/webhook", response_model=...)
+@api_router.post("/webhook")
 async def webhook(
-        model: ... = Body(..., example=...),
+        model: WebhookV1Request = Body(..., example=webhook_example),
         session: AsyncSession = Depends(get_session),
-        provider: YandexPayment = Depends(get_provider)
 ):
-    ...
+    """Логика работы ручки.
+    Получаем статус входящего события и делаем апдейт в базе.
+    Обновляем самое позднее событие.
+    """
+    if model.event == Event.ORDER_STATUS_UPDATED:
+        ...
+
+    if model.event == Event.OPERATION_STATUS_UPDATED:
+        ...
+
+    return {"status": "success"}
 
 
 @api_router.get("/info/order/{order_id}", response_model=OrderResponse)

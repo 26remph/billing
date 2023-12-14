@@ -1,7 +1,0 @@
-{
-    "code": 200,
-    "data": {
-        "paymentUrl": "string"
-    },
-    "status": "success"
-}
