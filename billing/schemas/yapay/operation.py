@@ -4,7 +4,7 @@ from typing import Dict, Any
 from pydantic import BaseModel, UUID4
 import datetime
 
-from billing.schemas.yapay.common import ResponseStatus
+from billing.schemas.yapay.payment import ResponseStatus
 
 
 class OperationType(str, Enum):

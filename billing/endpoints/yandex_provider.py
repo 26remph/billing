@@ -14,7 +14,7 @@ from billing.schemas.yapay.operation import OperationResponse
 from billing.schemas.yapay.order.request import OrderRequest
 from billing.schemas.yapay.order.response import OrderResponse, CreateOrderResponse
 
-api_router = APIRouter(tags=["Subscribe"])
+api_router = APIRouter(tags=["Yandex payment provider"])
 settings = get_settings()
 
 
@@ -39,6 +39,15 @@ async def create(
         pprint.pprint(response.model_dump(mode="json"))
 
     return response
+
+
+@api_router.post("/webhook", response_model=...)
+async def webhook(
+        model: ... = Body(..., example=...),
+        session: AsyncSession = Depends(get_session),
+        provider: YandexPayment = Depends(get_provider)
+):
+    ...
 
 
 @api_router.get("/info/order/{order_id}", response_model=OrderResponse)

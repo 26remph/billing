@@ -4,7 +4,7 @@ from pydantic import BaseModel, UUID4
 from billing.config.utils import get_provider_settings
 from billing.provider.common import ProviderType
 from billing.schemas.yapay.cart import RenderedCart
-from billing.schemas.yapay.common import PayMethod, CurrencyCode
+from billing.schemas.yapay.payment import PayMethod, CurrencyCode
 
 
 class BillingReport(BaseModel):

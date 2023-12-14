@@ -32,8 +32,8 @@ def get_app() -> FastAPI:
     tags_metadata = [
         {"name": "Content", "description": "CRUD operation with content."},
         {
-            "name": "Subscribe",
-            "description": "CRUD operation on subscribe user on communication channel as email, mobile, social, etc.",
+            "name": "Yandex payment provider",
+            "description": "Yandex pay provider workflow.",
         },
         {"name": "Mailing list", "description": "CRUD operation create mailing list for content."},
         {"name": "Template", "description": "Work with template common vars."},

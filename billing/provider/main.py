@@ -7,7 +7,7 @@ from billing.config.utils import get_provider_settings
 from billing.provider.common import ProviderType
 from billing.provider.yapay.payment import YandexPayment, PaymentInfoType
 from billing.schemas.yapay.cart import RenderedCartItem, CartTotal, RenderedCart
-from billing.schemas.yapay.common import PayMethod, CurrencyCode
+from billing.schemas.yapay.payment import PayMethod, CurrencyCode
 from billing.schemas.yapay.item import ItemQuantity
 from billing.schemas.yapay.order.request import MerchantRedirectUrls, OrderRequest
 

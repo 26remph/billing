@@ -3,7 +3,7 @@ import datetime
 from pydantic import BaseModel, UUID4
 
 from billing.schemas.yapay.cart import Cart
-from billing.schemas.yapay.common import (
+from billing.schemas.yapay.payment import (
     CurrencyCode,
     PaymentStatus,
     CardNetwork,
@@ -34,6 +34,9 @@ class Order(BaseModel):
     reason: str | None = None
     shippingMethod: ShippingMethod | None = None
     updated: datetime.datetime | None = None
+
+    # class Config:
+    #     orm_mode = True
 
 
 class OrderResponseData(BaseModel):
