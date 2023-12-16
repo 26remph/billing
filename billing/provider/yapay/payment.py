@@ -2,7 +2,6 @@ from enum import Enum
 from pydantic import BaseModel
 from pydantic_settings import BaseSettings
 
-from billing.config.default import YandexPaySettings
 from billing.provider.abstract import AbstractPayment
 from billing.provider.yapay.client import ApiClient
 from billing.schemas.yapay.operation import OperationResponse

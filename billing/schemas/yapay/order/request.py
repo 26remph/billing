@@ -1,12 +1,21 @@
 
 from pydantic import BaseModel, UUID4
 
-from billing.schemas.yapay.cart import RenderedCart
+from billing.schemas.yapay.cart import RenderedCart, Cart
 from billing.schemas.yapay.payment import PayMethod, CurrencyCode
+
+
+class CaptureRequest(BaseModel):
+    cart: Cart | None = None
+    externalOperationId: str | None = None
+    orderAmount: str | None = None
+    shipping: Shipping | None = None
+
 
 class CancelOrderRequest(BaseModel):
     externalOperationId: str | None
     reason: str
+
 
 class BillingReport(BaseModel):
     """Дополнительные параметры для отчета сплита."""
