@@ -9,6 +9,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from billing.db.connection import get_session
 from billing.endpoints.examples.request import create_order_example
 from billing.endpoints.examples.webhook import webhook_example
+from billing.esb.common import BillingAction, BillingSignal
 from billing.esb.connection import get_rabbit_connection
 from billing.esb.emitter import EsbBillingEmitter
 from billing.provider.utils import get_provider
@@ -67,8 +68,12 @@ async def webhook(
 
         # send signal in
         if model.order.paymentStatus == PaymentStatus.CAPTURED:
-
-        ...
+            cart_items = []
+            signal = BillingSignal(
+                user_id=str(uuid.uuid4()),  # get from token
+                cart_items=await session(...).get(model.order.orderId)
+            )
+            await esb.emit(signal=signal, action=BillingAction.allow_access)
 
     if model.event == Event.OPERATION_STATUS_UPDATED:
         ...

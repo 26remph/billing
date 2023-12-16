@@ -24,7 +24,7 @@ class YandexPaySettings(BaseSettings):
     request_timeout: int = 10_000
     api_key: str = "70c84fd3-7024-4b3c-84a3-f1d9ae1b1243"
 
-    merchant_id: str | None = None
+    merchant_id: str | None = "70c84fd3-7024-4b3c-84a3-f1d9ae1b1243"
     client_id: str | None = None
     callback_url: str | None = None
 

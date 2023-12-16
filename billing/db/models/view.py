@@ -1,6 +1,6 @@
 from sqladmin import ModelView
 
-from billing.db.models import Order, Cart, CartItem, Operation
+from billing.db.models import Order, Cart, Item, Operation
 
 
 class OperationAdmin(ModelView, model=Operation):
@@ -15,6 +15,6 @@ class CartAdmin(ModelView, model=Cart):
     column_list = [Cart.id]
 
 
-class CartItemAdmin(ModelView, model=CartItem):
-    column_list = [CartItem.id]
+class CartItemAdmin(ModelView, model=Item):
+    column_list = [Item.id]
 

@@ -10,6 +10,8 @@ from sqlmodel import SQLModel
 from alembic import context
 
 from billing.config.utils import get_settings
+from billing.db import DeclarativeBase
+from billing.db.models import bill
 
 # CONFIG
 load_dotenv()
@@ -26,7 +28,7 @@ config.set_section_option(section, "POSTGRES_PORT", str(settings.postgres_port))
 fileConfig(config.config_file_name, disable_existing_loggers=False)
 
 # METADATA
-target_metadata = SQLModel.metadata
+target_metadata = DeclarativeBase.metadata
 
 
 def run_migrations_offline() -> None:
