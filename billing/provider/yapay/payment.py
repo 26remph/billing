@@ -36,7 +36,7 @@ class YandexPayment(AbstractPayment):
             self, order_id: str,
             model: CancelOrderRequest,
             idempotency_key=None
-    ) -> CreateOrderResponse:
+    ) -> OperationResponse:
         url = f'{self.endpoint_cfg.order_url}/{order_id}/{self.endpoint_cfg.order_cancel_suffix}'
         dump = model.model_dump(mode="json", exclude_none=True)
 
@@ -44,13 +44,13 @@ class YandexPayment(AbstractPayment):
             async with session.post(url, json=dump) as response:
                 body = await response.json()
 
-        return CreateOrderResponse(**dict(body))
+        return OperationResponse(**dict(body))
 
     async def capture(
             self, order_id: str,
             model: CancelOrderRequest,
             idempotency_key = None
-    ) -> CreateOrderResponse:
+    ) -> OperationResponse:
         url = f'{self.endpoint_cfg.order_url}/{order_id}/{self.endpoint_cfg.order_capture_suffix}'
         dump = model.model_dump(mode="json", exclude_none=True)
 
@@ -58,21 +58,19 @@ class YandexPayment(AbstractPayment):
             async with session.post(url, json=dump) as response:
                 body = await response.json()
 
-        return CreateOrderResponse(**dict(body))
+        return OperationResponse(**dict(body))
 
     async def rollback(
         self, order_id: str,
-        model: CancelOrderRequest,
         idempotency_key = None
-    ) -> CreateOrderResponse:
+    ) -> OperationResponse:
         url = f'{self.endpoint_cfg.order_url}/{order_id}/{self.endpoint_cfg.order_rollback_suffix}'
-        dump = model.model_dump(mode="json", exclude_none=True)
 
         async for session in self.client.get_http_session():
-            async with session.post(url, json=dump) as response:
+            async with session.post(url) as response:
                 body = await response.json()
 
-        return CreateOrderResponse(**dict(body))
+        return OperationResponse(**dict(body))
 
     async def operation_info(self, external_operation_id: str) -> OperationResponse:
         url = f"{self.endpoint_cfg.operation_info_url}/{external_operation_id}"
