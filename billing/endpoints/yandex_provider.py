@@ -5,7 +5,6 @@ from typing import Annotated
 from fastapi import APIRouter, Body, Depends, Path
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from billing.config import get_settings
 from billing.db.connection import get_session
 from billing.endpoints.examples.request import create_order_example
 from billing.endpoints.examples.webhook import webhook_example
@@ -17,7 +16,6 @@ from billing.schemas.yapay.order.response import OrderResponse, CreateOrderRespo
 from billing.schemas.yapay.webhook import WebhookV1Request, Event
 
 api_router = APIRouter(tags=["Yandex provider"])
-# settings = get_settings()
 
 
 @api_router.post("/pay", response_model=CreateOrderResponse)
@@ -77,5 +75,19 @@ async def get_operation_info(
     provider: Annotated[YandexPayment, Depends(get_provider)] = None
 ):
     return await provider.payment_info(str(external_operation_id), typeinfo=PaymentInfoType.OPERATION)
+
+
+@api_router.post("/clearing")
+async def clearing(
+        session: AsyncSession = Depends(get_session),
+        provider: Annotated[YandexPayment, Depends(get_provider)] = None
+):
+    """Логика работы ручки.
+
+    Выбираем транзакции по которым выданы ссылки, но не произошла оплата.
+    Сверяет их с данными платежного провайдера и производит отмену, либо обновление статуса
+    операции или всего заказа.
+    """
+    return {"status": "success"}
 
 

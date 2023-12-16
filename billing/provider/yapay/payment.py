@@ -2,10 +2,11 @@ from enum import Enum
 from pydantic import BaseModel
 from pydantic_settings import BaseSettings
 
+from billing.config.default import YandexPaySettings
 from billing.provider.abstract import AbstractPayment
 from billing.provider.yapay.client import ApiClient
 from billing.schemas.yapay.operation import OperationResponse
-from billing.schemas.yapay.order.request import OrderRequest
+from billing.schemas.yapay.order.request import OrderRequest, CancelOrderRequest
 from billing.schemas.yapay.order.response import OrderResponse, CreateOrderResponse
 
 
@@ -21,7 +22,7 @@ class YandexPayment(AbstractPayment):
         self.endpoint_cfg = endpoint_cfg
 
     async def create(
-        self, model: OrderRequest, idempotency_key: str = None
+            self, model: OrderRequest, idempotency_key: str = None
     ) -> CreateOrderResponse:
         url = self.endpoint_cfg.order_create_url
         dump = model.model_dump(mode="json", exclude_none=True)
@@ -32,14 +33,47 @@ class YandexPayment(AbstractPayment):
 
         return CreateOrderResponse(**dict(body))
 
-    async def cancel(self):
-        ...
+    async def cancel(
+            self, order_id: str,
+            model: CancelOrderRequest,
+            idempotency_key=None
+    ) -> CreateOrderResponse:
+        url = f'{self.endpoint_cfg.order_url}/{order_id}/{self.endpoint_cfg.order_cancel_suffix}'
+        dump = model.model_dump(mode="json", exclude_none=True)
 
-    async def capture(self):
-        ...
+        async for session in self.client.get_http_session():
+            async with session.post(url, json=dump) as response:
+                body = await response.json()
 
-    async def rollback(self):
-        ...
+        return CreateOrderResponse(**dict(body))
+
+    async def capture(
+            self, order_id: str,
+            model: CancelOrderRequest,
+            idempotency_key = None
+    ) -> CreateOrderResponse:
+        url = f'{self.endpoint_cfg.order_url}/{order_id}/{self.endpoint_cfg.order_capture_suffix}'
+        dump = model.model_dump(mode="json", exclude_none=True)
+
+        async for session in self.client.get_http_session():
+            async with session.post(url, json=dump) as response:
+                body = await response.json()
+
+        return CreateOrderResponse(**dict(body))
+
+    async def rollback(
+        self, order_id: str,
+        model: CancelOrderRequest,
+        idempotency_key = None
+    ) -> CreateOrderResponse:
+        url = f'{self.endpoint_cfg.order_url}/{order_id}/{self.endpoint_cfg.order_rollback_suffix}'
+        dump = model.model_dump(mode="json", exclude_none=True)
+
+        async for session in self.client.get_http_session():
+            async with session.post(url, json=dump) as response:
+                body = await response.json()
+
+        return CreateOrderResponse(**dict(body))
 
     async def operation_info(self, external_operation_id: str) -> OperationResponse:
         url = f"{self.endpoint_cfg.operation_info_url}/{external_operation_id}"

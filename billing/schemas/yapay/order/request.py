@@ -1,11 +1,12 @@
 
 from pydantic import BaseModel, UUID4
 
-from billing.config.utils import get_provider_settings
-from billing.provider.common import ProviderType
 from billing.schemas.yapay.cart import RenderedCart
 from billing.schemas.yapay.payment import PayMethod, CurrencyCode
 
+class CancelOrderRequest(BaseModel):
+    externalOperationId: str | None
+    reason: str
 
 class BillingReport(BaseModel):
     """Дополнительные параметры для отчета сплита."""

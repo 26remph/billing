@@ -19,7 +19,6 @@ class PaymentMethod(BaseModel):
     cardNetwork: CardNetwork | None = None
     methodType: PayMethod
 
-
 class Order(BaseModel):
     cart: Cart
     currencyCode: CurrencyCode
@@ -34,9 +33,6 @@ class Order(BaseModel):
     reason: str | None = None
     shippingMethod: ShippingMethod | None = None
     updated: datetime.datetime | None = None
-
-    # class Config:
-    #     orm_mode = True
 
 
 class OrderResponseData(BaseModel):

@@ -6,8 +6,13 @@ class UkassaSettings(BaseSettings):
 
 
 class YandexPaySettings(BaseSettings):
-    order_create_url: str = "https://sandbox.pay.yandex.ru/api/merchant/v1/orders"
+    order_url: str = "https://sandbox.pay.yandex.ru/api/merchant/v1/orders"
     order_info_url: str = "https://sandbox.pay.yandex.ru/api/merchant/v1/orders"
+    order_cancel_suffix: str = "cancel"
+    order_refund_suffix: str = "refund"
+    order_capture_suffix: str = "capture"
+    order_rollback_suffix: str = "rollback"
+
     operation_info_url: str = (
         "https://sandbox.pay.yandex.ru/api/merchant/v1/operations"
     )
@@ -45,8 +50,20 @@ class DefaultSettings(BaseSettings):
     postgres_password: str = "postgres"
     db_connect_retry: int = 20
     db_pool_size: int = 15
-
     engine_mode_echo: bool = True
+
+    rabbitmq_host: str = "localhost"
+    rabbitmq_port: int = 5672
+    rabbitmq_default_user: str = "rmuser"
+    rabbitmq_default_pass: str = "password"
+
+    @property
+    def rabbitmq_dsn(self) -> str:
+        """Get rabbitmq servers dsn for connection."""
+        return (
+            f"amqp://{self.rabbitmq_default_user}:{self.rabbitmq_default_pass}"
+            f"@{self.rabbitmq_host}:{self.rabbitmq_port}/"
+        )
 
     @property
     def database_settings(self) -> dict:

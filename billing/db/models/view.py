@@ -1,25 +1,20 @@
 from sqladmin import ModelView
 
-from billing.db.models import Content, SubscriberChanel, ContentUser, Task, TemplateStatic
+from billing.db.models import Order, Cart, CartItem, Operation
 
 
-class ContentAdmin(ModelView, model=Content):
-    column_list = [Content.id]
+class OperationAdmin(ModelView, model=Operation):
+    column_list = [Operation.id]
 
 
-class SubscriberChanelAdmin(ModelView, model=SubscriberChanel):
-    column_list = [SubscriberChanel.id]
+class OrderAdmin(ModelView, model=Order):
+    column_list = [Order.id]
 
 
-class ContentUserAdmin(ModelView, model=ContentUser):
-    column_list = [ContentUser.id]
+class CartAdmin(ModelView, model=Cart):
+    column_list = [Cart.id]
 
 
-class TaskAdmin(ModelView, model=Task):
-    column_list = [Task.id]
-
-
-class TemplateStaticAdmin(ModelView, model=TemplateStatic):
-    column_list = [TemplateStatic.id]
-
+class CartItemAdmin(ModelView, model=CartItem):
+    column_list = [CartItem.id]
 

@@ -54,13 +54,13 @@ format:  ##@Code Reformat code with isort and black
 	poetry run python3 -m ruff format $(CODE)
 
 migrate:  ##@Database Do all migrations in database
-	cd $(THIRD_APPLICATION_NAME)/db && alembic upgrade $(args)
+	cd $(APPLICATION_NAME)/db && alembic upgrade $(args)
 
 run:  ##@Application Run application server
 	poetry run python3 -m $(APPLICATION_NAME)
 
 revision:  ##@Database Create new revision file automatically with prefix (ex. 2022_01_01_14cs34f_message.py)
-	cd $(THIRD_APPLICATION_NAME)/db && alembic revision --autogenerate
+	cd $(APPLICATION_NAME)/db && alembic revision --autogenerate
 
 open_db:  ##@Database Open database inside docker-image
 	docker exec -it shortener_postgres psql -d $(POSTGRES_DB) -U $(POSTGRES_USER)

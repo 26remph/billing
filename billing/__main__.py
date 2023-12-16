@@ -7,8 +7,7 @@ from uvicorn import run
 
 from billing.config import DefaultSettings
 from billing.config.utils import get_settings
-from billing.db.models.view import TemplateStaticAdmin, TaskAdmin, ContentAdmin, ContentUserAdmin, \
-    SubscriberChanelAdmin
+from billing.db.models.view import CartAdmin, OperationAdmin, OrderAdmin, CartItemAdmin
 from billing.endpoints import list_of_routes
 from billing.utils.common import get_hostname
 
@@ -59,11 +58,10 @@ app = get_app()
 
 engine = create_async_engine(get_settings().database_uri, echo=True, future=True)
 admin = Admin(app, engine)
-admin.add_view(TemplateStaticAdmin)
-admin.add_view(TaskAdmin)
-admin.add_view(ContentAdmin)
-admin.add_view(ContentUserAdmin)
-admin.add_view(SubscriberChanelAdmin)
+admin.add_view(CartAdmin)
+admin.add_view(CartItemAdmin)
+admin.add_view(OrderAdmin)
+admin.add_view(OperationAdmin)
 
 
 if __name__ == "__main__":  # pragma: no cover

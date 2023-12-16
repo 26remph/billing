@@ -28,7 +28,7 @@ class AbstractPayment(abc.ABC):
 
     @abc.abstractmethod
     def create(
-        self, body: BaseModel | dict[str, str], idempotency_key: str = None
+        self, model: BaseModel | dict[str, str], idempotency_key: str = None
     ) -> BaseModel | dict[str, str]:
         raise NotImplementedError
 
@@ -36,7 +36,7 @@ class AbstractPayment(abc.ABC):
     def cancel(
         self,
         entity_id: str,
-        body: BaseModel | dict[str, str],
+        model: BaseModel | dict[str, str],
         idempotency_key: str = None,
     ) -> BaseModel | dict[str, str]:
         raise NotImplementedError
@@ -45,7 +45,7 @@ class AbstractPayment(abc.ABC):
     def capture(
         self,
         entity_id: str,
-        body: BaseModel | dict[str, str],
+        model: BaseModel | dict[str, str],
         idempotency_key: str = None,
     ) -> BaseModel | dict[str, str]:
         raise NotImplementedError
