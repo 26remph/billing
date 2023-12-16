@@ -1,3 +1,4 @@
+from pydantic import HttpUrl, RedisDsn
 from pydantic_settings import BaseSettings
 
 
@@ -56,6 +57,26 @@ class DefaultSettings(BaseSettings):
     rabbitmq_port: int = 5672
     rabbitmq_default_user: str = "rmuser"
     rabbitmq_default_pass: str = "password"
+    rmq_exchange_name: str = "billing"
+    rmq_queue_name: str = "billing_on"
+
+    redis_host: str = "localhost"
+    redis_port: int = 6379
+    redis_db: int = 0
+    redis_decode_responses: bool = True
+
+    @property
+    def celery_broker(self) -> HttpUrl:
+        return self.rabbitmq_dsn
+
+    @property
+    def celery_backend(self) -> HttpUrl:
+        return self.redis_dsn
+
+    @property
+    def redis_dsn(self) -> RedisDsn:
+        """Get redis servers dsn for connection."""
+        return f"redis://{self.redis_host}:{self.redis_port}?decode_responses={self.redis_decode_responses}"
 
     @property
     def rabbitmq_dsn(self) -> str:

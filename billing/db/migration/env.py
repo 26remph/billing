@@ -10,7 +10,6 @@ from sqlmodel import SQLModel
 from alembic import context
 
 from billing.config.utils import get_settings
-from billing.db.models.news import *
 
 # CONFIG
 load_dotenv()

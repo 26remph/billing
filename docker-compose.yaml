@@ -43,17 +43,6 @@ services:
       <<: *hc-interval
       test: [ "CMD-SHELL", "pg_isready -d $$POSTGRES_DB -U $$POSTGRES_USER"]
 
-  mongodb:
-    <<: *default
-    image: mongodb/mongodb-community-server:6.0-ubi8
-#    environment:
-#      - MONGO_INITDB_ROOT_USERNAME=user
-#      - MONGO_INITDB_ROOT_PASSWORD=pass
-    ports:
-      - "27017:27017"
-    volumes:
-      - mongodb:/data/db
-
   rabbitmq:
     <<: *default
     hostname: rabbitmq

@@ -18,6 +18,7 @@ async def main():
             Message(b'Hello world'),
             routing_key=queue.name
         )
+        print(" [x] Sent 'Hello World!'")
 
 if __name__ == '__main__':
     cfg = get_settings()
