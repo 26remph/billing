@@ -1,14 +1,13 @@
 import asyncio
-
-import aio_pika
 from aio_pika import Message, DeliveryMode, ExchangeType
 from aio_pika.abc import AbstractRobustConnection
 
 from billing.config import get_settings
 from billing.esb.common import BillingSignal, BillingAction
+from billing.services import get_esb_services
 
 
-class EsbRBillingEmitter:
+class EsbBillingEmitter:
     connection: AbstractRobustConnection
 
     def __init__(
@@ -42,16 +41,12 @@ class EsbRBillingEmitter:
             print(f" [x] Sent body {message.body!r}")
 
 
-async def get_rabbit_connection() -> AbstractRobustConnection:
-    return await aio_pika.connect_robust(
-        url=cfg.rabbitmq_dsn,
-    )
-
-
 async def main() -> None:
     # Perform connection
-    connection = await get_rabbit_connection()
-    esb_send = EsbRBillingEmitter(connection)
+    # connection = await get_rabbit_connection()
+    # esb_send = EsbBillingEmitter(connection)
+    esb_send = await get_esb_services()
+
     signal = BillingSignal(user_id="1212", cart_items=["123"])
     await esb_send.emit(signal=signal, action=BillingAction.allow_access)
 

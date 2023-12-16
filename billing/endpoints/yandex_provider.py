@@ -2,18 +2,23 @@ import pprint
 import uuid
 from typing import Annotated
 
+from aio_pika.abc import AbstractRobustConnection
 from fastapi import APIRouter, Body, Depends, Path
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from billing.db.connection import get_session
 from billing.endpoints.examples.request import create_order_example
 from billing.endpoints.examples.webhook import webhook_example
+from billing.esb.connection import get_rabbit_connection
+from billing.esb.emitter import EsbBillingEmitter
 from billing.provider.utils import get_provider
 from billing.provider.yapay.payment import YandexPayment, PaymentInfoType
 from billing.schemas.yapay.operation import OperationResponse
 from billing.schemas.yapay.order.request import OrderRequest
 from billing.schemas.yapay.order.response import OrderResponse, CreateOrderResponse
+from billing.schemas.yapay.payment import PaymentStatus
 from billing.schemas.yapay.webhook import WebhookV1Request, Event
+from billing.services import get_esb_services
 
 api_router = APIRouter(tags=["Yandex provider"])
 
@@ -47,12 +52,22 @@ async def create(
 async def webhook(
         model: WebhookV1Request = Body(..., example=webhook_example),
         session: AsyncSession = Depends(get_session),
+        esb: EsbBillingEmitter = Depends(get_esb_services)
 ):
     """Логика работы ручки.
-    Получаем статус входящего события и делаем апдейт в базе.
-    Обновляем самое позднее событие.
+    - Получаем статус входящего события и делаем апдейт в базе.
+    - Обновляем самое позднее событие.
+    В случае оплаты/возврата:
+        - отправляем сообщение в шину для auth сервиса об прекращении
+        или предоставлении доступа к фильму.
+
     """
     if model.event == Event.ORDER_STATUS_UPDATED:
+        #  update database
+
+        # send signal in
+        if model.order.paymentStatus == PaymentStatus.CAPTURED:
+
         ...
 
     if model.event == Event.OPERATION_STATUS_UPDATED:
@@ -86,7 +101,7 @@ async def clearing(
 
     Выбираем транзакции по которым выданы ссылки, но не произошла оплата.
     Сверяет их с данными платежного провайдера и производит отмену, либо обновление статуса
-    операции или всего заказа.
+    операции или всего заказа в базе сервиса.
     """
     return {"status": "success"}
 
