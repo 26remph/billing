@@ -1,7 +1,7 @@
 
 #### Changelog:
 v0.0.20 - billing service MVP version  
-v0.0.30 - billing api update: add endpoint
+v0.0.30 - billing api update: add endpoint  
 v0.0.40 - esb on rabbitmq append  
 v0.0.42 - webhook enpoint for two stage billing process append  
 
