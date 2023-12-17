@@ -19,6 +19,7 @@ class PaymentMethod(BaseModel):
     cardNetwork: CardNetwork | None = None
     methodType: PayMethod
 
+
 class Order(BaseModel):
     cart: Cart
     currencyCode: CurrencyCode

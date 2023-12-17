@@ -1,5 +1,6 @@
+import uuid
 
-from pydantic import BaseModel, UUID4
+from pydantic import BaseModel, UUID4, Field
 
 from billing.schemas.yapay.cart import RenderedCart, Cart
 from billing.schemas.yapay.payment import PayMethod, CurrencyCode
@@ -9,7 +10,7 @@ class CaptureRequest(BaseModel):
     cart: Cart | None = None
     externalOperationId: str | None = None
     orderAmount: str | None = None
-    shipping: Shipping | None = None
+    # shipping: Shipping | None = None
 
 
 class CancelOrderRequest(BaseModel):
@@ -67,7 +68,7 @@ class OrderRequest(BaseModel):
     cart: RenderedCart
     currencyCode: CurrencyCode
     extensions: OrderExtensions = None
-    orderId: UUID4
+    orderId: UUID4 = Field(default=uuid.uuid4())
     purpose: str = None
     redirectUrls: MerchantRedirectUrls
     ttl: int = 1800

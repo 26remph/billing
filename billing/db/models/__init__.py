@@ -1,9 +1,9 @@
-from billing.db.models.bill import ItemQuantity, Item, cart_item_table, Cart, Order, Operation
+from billing.db.models.bill import ItemQuantity, Item, CartItem, Cart, Order, Operation
 
 __all__ = [
     "ItemQuantity",
     "Item",
-    "cart_item_table",
+    "CartItem",
     "Cart",
     "Order",
     "Operation"

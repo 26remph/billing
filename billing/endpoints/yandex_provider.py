@@ -2,15 +2,14 @@ import pprint
 import uuid
 from typing import Annotated
 
-from aio_pika.abc import AbstractRobustConnection
 from fastapi import APIRouter, Body, Depends, Path
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from billing.db.connection import get_session
+from billing.db.models import ItemQuantity, Item, Cart, Order
 from billing.endpoints.examples.request import create_order_example
 from billing.endpoints.examples.webhook import webhook_example
 from billing.esb.common import BillingAction, BillingSignal
-from billing.esb.connection import get_rabbit_connection
 from billing.esb.emitter import EsbBillingEmitter
 from billing.provider.utils import get_provider
 from billing.provider.yapay.payment import YandexPayment, PaymentInfoType
@@ -39,12 +38,37 @@ async def create(
         - возвращаем ссылку на оплату
     """
 
-    request_id = str(uuid.uuid4())
+    request_id = str(uuid.uuid4()) # get from header over nginx
     response = await provider.create(model=model, idempotency_key=request_id)
 
-    if response.code == 200:
-        print("paymentUrl:", response.data.paymentUrl)
-        pprint.pprint(response.model_dump(mode="json"))
+    if response.status == 200:
+        items = []
+        for item in model.cart.items:
+            item_q_model = ItemQuantity(**dict(item.quantity.model_dump()))
+            session.add(item_q_model)
+            await session.flush()
+
+            data = {
+                **dict(item.model_dump(exclude={"quantity", }, exclude_none=True)),
+                "item_quantity_id": item_q_model.id,
+            }
+            item_model = Item(**data)
+            items.append(item_model)
+
+            session.add(item_model)
+            await session.flush()
+
+        cart_model = Cart(externalId=str(uuid.uuid4()), total=model.cart.total.amount, items=items)
+        session.add(cart_model)
+        await session.flush()
+
+        order = Order(cart_id=cart_model.id, orderId=model.orderId)
+        session.add(order)
+
+        await session.commit()
+
+        await session.refresh(cart_model)
+        await session.refresh(order)
 
     return response
 
