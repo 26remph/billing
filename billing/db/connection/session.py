@@ -38,6 +38,7 @@ async def get_session() -> AsyncSession:
         finally:
             await session.close()
 
+
 __all__ = [
     "get_session",
 ]

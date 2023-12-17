@@ -26,9 +26,9 @@ api_router = APIRouter(tags=["Yandex provider"])
 
 @api_router.post("/pay", response_model=CreateOrderResponse)
 async def create(
-        model: OrderRequest = Body(..., example=create_order_example),
-        session: AsyncSession = Depends(get_session),
-        provider: YandexPayment = Depends(get_provider)
+    model: OrderRequest = Body(..., example=create_order_example),
+    session: AsyncSession = Depends(get_session),
+    provider: YandexPayment = Depends(get_provider),
 ):
     """Логика работы ручки:
 
@@ -39,7 +39,7 @@ async def create(
         - возвращаем ссылку на оплату
     """
 
-    request_id = str(uuid.uuid4()) # get from header over nginx
+    request_id = str(uuid.uuid4())  # get from header over nginx
     response = await provider.create(model=model, idempotency_key=request_id)
 
     if response.code == 200:
@@ -50,7 +50,14 @@ async def create(
             await session.flush()
 
             data = {
-                **dict(item.model_dump(exclude={"quantity", }, exclude_none=True)),
+                **dict(
+                    item.model_dump(
+                        exclude={
+                            "quantity",
+                        },
+                        exclude_none=True,
+                    )
+                ),
                 "item_quantity_id": item_q_model.id,
             }
             item_model = Item(**data)
@@ -76,9 +83,9 @@ async def create(
 
 @api_router.post("/webhook")
 async def webhook(
-        model: WebhookV1Request = Body(..., example=webhook_example),
-        session: AsyncSession = Depends(get_session),
-        esb: EsbBillingEmitter = Depends(get_esb_services)
+    model: WebhookV1Request = Body(..., example=webhook_example),
+    session: AsyncSession = Depends(get_session),
+    esb: EsbBillingEmitter = Depends(get_esb_services),
 ):
     """Логика работы ручки.
     - Получаем статус входящего события и делаем апдейт в базе.
@@ -91,7 +98,6 @@ async def webhook(
 
     # use for one stage billing processing
     if model.event == Event.ORDER_STATUS_UPDATED:
-
         #  select for update database
         q = select(Order).where(Order.orderId == model.order.orderId).with_for_update()
         db_order: Order = await session.scalar(q)
@@ -106,7 +112,7 @@ async def webhook(
             items_uuid = [str(row.productId) for row in result.scalars()]
             signal = BillingSignal(
                 user_id=str(uuid.uuid4()),  # get from token
-                cart_items=items_uuid
+                cart_items=items_uuid,
             )
             await esb.emit(signal=signal, action=BillingAction.allow_access)
 
@@ -119,24 +125,21 @@ async def webhook(
 
 @api_router.get("/info/order/{order_id}", response_model=OrderResponse)
 async def get_order_info(
-        order_id: uuid.UUID = Path(...),
-        provider: Annotated[YandexPayment, Depends(get_provider)] = None
+    order_id: uuid.UUID = Path(...), provider: Annotated[YandexPayment, Depends(get_provider)] = None
 ):
     return await provider.payment_info(str(order_id), typeinfo=PaymentInfoType.ORDER)
 
 
 @api_router.get("/info/operation_info/{external_operation_id}", response_model=OperationResponse)
 async def get_operation_info(
-    external_operation_id: uuid.UUID = Path(...),
-    provider: Annotated[YandexPayment, Depends(get_provider)] = None
+    external_operation_id: uuid.UUID = Path(...), provider: Annotated[YandexPayment, Depends(get_provider)] = None
 ):
     return await provider.payment_info(str(external_operation_id), typeinfo=PaymentInfoType.OPERATION)
 
 
 @api_router.post("/clearing")
 async def clearing(
-        session: AsyncSession = Depends(get_session),
-        provider: Annotated[YandexPayment, Depends(get_provider)] = None
+    session: AsyncSession = Depends(get_session), provider: Annotated[YandexPayment, Depends(get_provider)] = None
 ):
     """Логика работы ручки.
 
@@ -145,5 +148,3 @@ async def clearing(
     операции или всего заказа в базе сервиса.
     """
     return {"status": "success"}
-
-

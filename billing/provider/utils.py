@@ -9,4 +9,3 @@ async def get_provider(provider_type: ProviderType) -> AbstractPayment:
         # Создаем интерфейс оплаты с авторизацией по секретному ключу.
         cfg = get_provider_settings(ProviderType.yapay)
         return YandexPayment(api_key=cfg.api_key, endpoint_cfg=cfg)
-

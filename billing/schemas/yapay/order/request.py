@@ -72,5 +72,3 @@ class OrderRequest(BaseModel):
     purpose: str = None
     redirectUrls: MerchantRedirectUrls
     ttl: int = 1800
-
-

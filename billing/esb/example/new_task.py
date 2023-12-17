@@ -14,9 +14,7 @@ async def main() -> None:
         # Creating a channel
         channel = await connection.channel()
 
-        message_body = b" ".join(
-            arg.encode() for arg in sys.argv[1:]
-        ) or b"Hello World!"
+        message_body = b" ".join(arg.encode() for arg in sys.argv[1:]) or b"Hello World!"
 
         message = Message(message_body, delivery_mode=DeliveryMode.PERSISTENT)
         # Sending the message
@@ -26,6 +24,7 @@ async def main() -> None:
         )
         print(f" [x] Sent {message_body!r}")
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     cfg = get_settings()
     asyncio.run(main())

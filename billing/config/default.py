@@ -14,9 +14,7 @@ class YandexPaySettings(BaseSettings):
     order_capture_suffix: str = "capture"
     order_rollback_suffix: str = "rollback"
 
-    operation_info_url: str = (
-        "https://sandbox.pay.yandex.ru/api/merchant/v1/operations"
-    )
+    operation_info_url: str = "https://sandbox.pay.yandex.ru/api/merchant/v1/operations"
 
     redirect_on_error_url: str = "/error_page_url"
     redirect_on_success_url: str = "/success_page_url"
@@ -116,4 +114,3 @@ class DefaultSettings(BaseSettings):
         return "postgresql://{user}:{password}@{host}:{port}/{database}".format(
             **self.database_settings,
         )
-

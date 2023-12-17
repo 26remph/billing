@@ -20,11 +20,12 @@ async def main():
 
     async with connection:
         channel = await connection.channel()
-        queue = await channel.declare_queue('hello')
+        queue = await channel.declare_queue("hello")
         await queue.consume(on_message, no_ack=True)
         print(" [*] Waiting for messages. To exit press CTRL+C")
         await asyncio.Future()
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     cfg = get_settings()
     asyncio.run(main())

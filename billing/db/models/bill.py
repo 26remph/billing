@@ -2,7 +2,7 @@ import uuid
 from datetime import datetime
 from uuid import UUID
 
-from sqlalchemy import func, DateTime, Float, String, ForeignKey, Text, Enum, select
+from sqlalchemy import func, DateTime, Float, String, ForeignKey, Text, Enum
 from sqlalchemy.orm import mapped_column, Mapped, relationship
 
 from billing.schemas.yapay.item import ItemType
@@ -50,9 +50,7 @@ class Item(CommonFieldMixin, DeclarativeBase):
     total: Mapped[float] = mapped_column(Float, nullable=True)
     type: Mapped[str] = mapped_column(Enum(ItemType), default=ItemType.UNSPECIFIED)
     unitPrice: Mapped[float] = mapped_column(Float, nullable=True)
-    carts: Mapped[list["Cart"]] = relationship(
-        secondary="cart_item", back_populates="items", lazy="selectin"
-    )
+    carts: Mapped[list["Cart"]] = relationship(secondary="cart_item", back_populates="items", lazy="selectin")
 
 
 class Cart(CommonFieldMixin, DeclarativeBase):
@@ -64,9 +62,7 @@ class Cart(CommonFieldMixin, DeclarativeBase):
     cartId: Mapped[str] = mapped_column(String(255), nullable=True)
     externalId: Mapped[str] = mapped_column(String(255), nullable=True)
     total: Mapped[float] = mapped_column(Float, nullable=True)
-    items: Mapped[list["Item"]] = relationship(
-        secondary="cart_item", back_populates="carts", lazy="selectin"
-    )
+    items: Mapped[list["Item"]] = relationship(secondary="cart_item", back_populates="carts", lazy="selectin")
 
 
 class Order(CommonFieldMixin, DeclarativeBase):
@@ -84,7 +80,6 @@ class Order(CommonFieldMixin, DeclarativeBase):
 
 
 class Operation(CommonFieldMixin, DeclarativeBase):
-
     __tablename__ = "operation"
 
     amount: Mapped[float] = mapped_column(Float, nullable=False)

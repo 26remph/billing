@@ -7,11 +7,7 @@ webhook_example = {
     "event": Event.ORDER_STATUS_UPDATED,
     "eventTime": datetime.datetime.now(),
     "merchantId": "c3073b9d-edd0-49f2-a28d-b7ded8ff9a8b",
-    "order": {
-        "deliveryStatus": "NEW",
-        "orderId": "c3073b9d-edd0-49f2-a28d-b7ded8ff9a8b",
-        "paymentStatus": "CAPTURED"
-    },
+    "order": {"deliveryStatus": "NEW", "orderId": "c3073b9d-edd0-49f2-a28d-b7ded8ff9a8b", "paymentStatus": "CAPTURED"},
 }
 
 webhook_operation_update_example = {
@@ -23,6 +19,6 @@ webhook_operation_update_example = {
         "operationId": "c3073b9d-edd0-49f2-a28d-b7ded8ff9a8b",
         "operationType": "CAPTURE",
         "orderId": "c3073b9d-edd0-49f2-a28d-b7ded8ff9a8b",
-        "status": OperationStatus.SUCCESS
+        "status": OperationStatus.SUCCESS,
     },
 }

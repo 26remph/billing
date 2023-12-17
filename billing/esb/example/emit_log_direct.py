@@ -15,12 +15,11 @@ async def main() -> None:
         channel = await connection.channel()
 
         logs_exchange = await channel.declare_exchange(
-            "logs", ExchangeType.DIRECT,
+            "logs",
+            ExchangeType.DIRECT,
         )
 
-        message_body = b" ".join(
-            arg.encode() for arg in sys.argv[2:]
-        ) or b"Hello World!"
+        message_body = b" ".join(arg.encode() for arg in sys.argv[2:]) or b"Hello World!"
 
         message = Message(
             message_body,

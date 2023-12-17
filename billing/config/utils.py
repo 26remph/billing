@@ -13,7 +13,6 @@ def get_settings() -> DefaultSettings:
 
 @lru_cache
 def get_provider_settings(provider: ProviderType) -> BaseSettings:
-
     if provider == ProviderType.yapay:
         return YandexPaySettings()
     elif provider == ProviderType.ukassa:

@@ -64,27 +64,15 @@ services:
     depends_on:
       - rabbitmq
 
-
-  celery_enrich:
-    hostname: enrich
-    <<: *celery-worker-default
-    command: [ "python", "-m", "celery", "-A", "notify.extensions.celery_app", "worker", "-Q", "q_enrich_msg", "-l", "info" ]
-
-
-  celery_send_email:
-    hostname: send_email
-    <<: *celery-worker-default
-    command: [ "python", "-m", "celery", "-A", "notify.extensions.celery_app", "worker", "-Q", "q_send_mail", "--concurrency", "2", "-l", "info" ]
-
-#  celery_beat:
-#    <<: *celery-default
-#    command: [ "python", "-m", "celery", "-A", "notify.extensions.celery_app", "beat" ]
+  celery_beat:
+    <<: *celery-default
+    command: [ "python", "-m", "celery", "-A", "billing.scheduler.celery_app", "beat" ]
 
   celery_flower:
     <<: *celery-default
     ports:
       - "5555:5555"
-    command: [ "python", "-m", "celery", "-A", "notify.extensions.celery_app", "flower" ]
+    command: [ "python", "-m", "celery", "-A", "billing.scheduler.celery_app", "flower" ]
     healthcheck:
       <<: *hc-interval
       test: [ "CMD-SHELL", "curl --fail http://localhost:5555/metrics || exit 1" ]

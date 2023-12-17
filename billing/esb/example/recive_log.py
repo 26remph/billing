@@ -21,7 +21,8 @@ async def main() -> None:
         await channel.set_qos(prefetch_count=1)
 
         logs_exchange = await channel.declare_exchange(
-            "logs", ExchangeType.FANOUT,
+            "logs",
+            ExchangeType.FANOUT,
         )
 
         # Declaring queue

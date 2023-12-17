@@ -15,12 +15,11 @@ async def main() -> None:
         channel = await connection.channel()
 
         logs_exchange = await channel.declare_exchange(
-            "logs", ExchangeType.FANOUT,
+            "logs",
+            ExchangeType.FANOUT,
         )
 
-        message_body = b" ".join(
-            arg.encode() for arg in sys.argv[1:]
-        ) or b"Hello World!"
+        message_body = b" ".join(arg.encode() for arg in sys.argv[1:]) or b"Hello World!"
 
         message = Message(
             message_body,
@@ -32,6 +31,7 @@ async def main() -> None:
 
         print(f" [x] Sent {message!r}")
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     cfg = get_settings()
     asyncio.run(main())

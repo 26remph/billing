@@ -20,14 +20,10 @@ class ApiClient:
             "Authorization": self.auth,
         }
 
-    async def get_http_session(
-        self, request_id: str = None
-    ) -> AsyncGenerator[ClientSession, None]:
+    async def get_http_session(self, request_id: str = None) -> AsyncGenerator[ClientSession, None]:
         if not request_id:
             request_id = str(uuid.uuid4())
 
-        async with aiohttp.ClientSession(
-            headers=self.create_header(request_id)
-        ) as session:
+        async with aiohttp.ClientSession(headers=self.create_header(request_id)) as session:
             yield session
             await session.close()

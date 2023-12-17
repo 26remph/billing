@@ -42,13 +42,9 @@ if __name__ == "__main__":
 
     # Здесь создаем модель руками. В дальнейшем ее можно получить из PaymentApi
     # указав request_model == OrderRequest
-    redirect_urls = MerchantRedirectUrls(
-        onError=config.redirect_on_error_url, onSuccess=config.redirect_on_success_url
-    )
+    redirect_urls = MerchantRedirectUrls(onError=config.redirect_on_error_url, onSuccess=config.redirect_on_success_url)
 
-    item = RenderedCartItem(
-        productId=uuid.uuid4(), quantity=ItemQuantity(count=1), total=1560.00
-    )
+    item = RenderedCartItem(productId=uuid.uuid4(), quantity=ItemQuantity(count=1), total=1560.00)
     cart = RenderedCart(items=[item], total=CartTotal(amount=1560.00))
 
     order = OrderRequest(

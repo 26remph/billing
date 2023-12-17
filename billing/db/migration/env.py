@@ -5,13 +5,11 @@ from dotenv import load_dotenv
 from sqlalchemy.engine import Connection
 from sqlalchemy import pool
 from sqlalchemy.ext.asyncio import async_engine_from_config
-from sqlmodel import SQLModel
 
 from alembic import context
 
 from billing.config.utils import get_settings
 from billing.db import DeclarativeBase
-from billing.db.models import bill
 
 # CONFIG
 load_dotenv()

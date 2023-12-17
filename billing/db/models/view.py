@@ -17,4 +17,3 @@ class CartAdmin(ModelView, model=Cart):
 
 class CartItemAdmin(ModelView, model=Item):
     column_list = [Item.id]
-

@@ -27,9 +27,7 @@ class AbstractPayment(abc.ABC):
         self.client: Any = None
 
     @abc.abstractmethod
-    def create(
-        self, model: BaseModel | dict[str, str], idempotency_key: str = None
-    ) -> BaseModel | dict[str, str]:
+    def create(self, model: BaseModel | dict[str, str], idempotency_key: str = None) -> BaseModel | dict[str, str]:
         raise NotImplementedError
 
     @abc.abstractmethod

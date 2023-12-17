@@ -9,24 +9,23 @@ class EsbBillingEmitter:
     connection: AbstractRobustConnection
 
     def __init__(
-            self,
-            rabbit_connections: AbstractRobustConnection,
-            queue_name: str = get_settings().rmq_queue_name,
-            exchange_name: str = get_settings().rmq_exchange_name
-        ) -> None:
+        self,
+        rabbit_connections: AbstractRobustConnection,
+        queue_name: str = get_settings().rmq_queue_name,
+        exchange_name: str = get_settings().rmq_exchange_name,
+    ) -> None:
         self.connection = rabbit_connections
         self.queue_name = queue_name
         self.exchange_name = exchange_name
 
     async def emit(self, signal: BillingSignal, action: BillingAction):
-
-        message_body = str(signal.model_dump(mode='python')).encode()
+        message_body = str(signal.model_dump(mode="python")).encode()
 
         async with self.connection:
-
             channel = await self.connection.channel()
             billing_exchange = await channel.declare_exchange(
-                self.exchange_name, ExchangeType.DIRECT,
+                self.exchange_name,
+                ExchangeType.DIRECT,
             )
 
             message = Message(

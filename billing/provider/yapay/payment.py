@@ -1,11 +1,8 @@
 from enum import Enum
 from pydantic import BaseModel
-from pydantic_settings import BaseSettings
 
 from billing.config.default import YandexPaySettings
-from billing.config.utils import get_provider_settings
 from billing.provider.abstract import AbstractPayment
-from billing.provider.common import ProviderType
 from billing.provider.yapay.client import ApiClient
 from billing.schemas.yapay.operation import OperationResponse
 from billing.schemas.yapay.order.request import OrderRequest, CancelOrderRequest
@@ -23,9 +20,7 @@ class YandexPayment(AbstractPayment):
         self.client: ApiClient = ApiClient(api_key=api_key)
         self.endpoint_cfg = endpoint_cfg
 
-    async def create(
-            self, model: OrderRequest, idempotency_key: str = None
-    ) -> CreateOrderResponse:
+    async def create(self, model: OrderRequest, idempotency_key: str = None) -> CreateOrderResponse:
         print(self.endpoint_cfg)
         url = self.endpoint_cfg.order_url
         dump = model.model_dump(mode="json", exclude_none=True)
@@ -36,12 +31,8 @@ class YandexPayment(AbstractPayment):
 
         return CreateOrderResponse(**dict(body))
 
-    async def cancel(
-            self, order_id: str,
-            model: CancelOrderRequest,
-            idempotency_key=None
-    ) -> OperationResponse:
-        url = f'{self.endpoint_cfg.order_url}/{order_id}/{self.endpoint_cfg.order_cancel_suffix}'
+    async def cancel(self, order_id: str, model: CancelOrderRequest, idempotency_key=None) -> OperationResponse:
+        url = f"{self.endpoint_cfg.order_url}/{order_id}/{self.endpoint_cfg.order_cancel_suffix}"
         dump = model.model_dump(mode="json", exclude_none=True)
 
         async for session in self.client.get_http_session():
@@ -50,12 +41,8 @@ class YandexPayment(AbstractPayment):
 
         return OperationResponse(**dict(body))
 
-    async def capture(
-            self, order_id: str,
-            model: CancelOrderRequest,
-            idempotency_key = None
-    ) -> OperationResponse:
-        url = f'{self.endpoint_cfg.order_url}/{order_id}/{self.endpoint_cfg.order_capture_suffix}'
+    async def capture(self, order_id: str, model: CancelOrderRequest, idempotency_key=None) -> OperationResponse:
+        url = f"{self.endpoint_cfg.order_url}/{order_id}/{self.endpoint_cfg.order_capture_suffix}"
         dump = model.model_dump(mode="json", exclude_none=True)
 
         async for session in self.client.get_http_session():
@@ -64,11 +51,8 @@ class YandexPayment(AbstractPayment):
 
         return OperationResponse(**dict(body))
 
-    async def rollback(
-        self, order_id: str,
-        idempotency_key = None
-    ) -> OperationResponse:
-        url = f'{self.endpoint_cfg.order_url}/{order_id}/{self.endpoint_cfg.order_rollback_suffix}'
+    async def rollback(self, order_id: str, idempotency_key=None) -> OperationResponse:
+        url = f"{self.endpoint_cfg.order_url}/{order_id}/{self.endpoint_cfg.order_rollback_suffix}"
 
         async for session in self.client.get_http_session():
             async with session.post(url) as response:
@@ -93,9 +77,7 @@ class YandexPayment(AbstractPayment):
                 body = await response.json()
         return OrderResponse(**dict(body))
 
-    async def payment_info(
-        self, entity_id, typeinfo: PaymentInfoType = PaymentInfoType.ORDER
-    ) -> BaseModel:
+    async def payment_info(self, entity_id, typeinfo: PaymentInfoType = PaymentInfoType.ORDER) -> BaseModel:
         if typeinfo == PaymentInfoType.ORDER:
             model = await self.order_info(order_id=entity_id)
         else:

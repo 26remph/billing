@@ -14,12 +14,10 @@ async def main():
 
         queue = await channel.declare_queue("hello")
 
-        await channel.default_exchange.publish(
-            Message(b'Hello world'),
-            routing_key=queue.name
-        )
+        await channel.default_exchange.publish(Message(b"Hello world"), routing_key=queue.name)
         print(" [x] Sent 'Hello World!'")
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     cfg = get_settings()
     asyncio.run(main())
