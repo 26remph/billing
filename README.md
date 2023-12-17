@@ -26,7 +26,7 @@ v0.0.30 - billing api update: add endpoint
 
 Стек: FastAPI + alchemy + alembic + RabbitMQ  
 Хранилище: PostgresSQL
-[Схема базы данных](https://dbdesigner.page.link/Fnz83LWdQYdgChVo6)
+[Схема базы данных](https://dbdesigner.page.link/CzaATSRrwBsGm5Br5)
 
 #### Provider manager
 Python классы реализующие проксирование запросов от внутреннего Billing API к внешнему API провайдера. Основан на абстрактом классе, который должен уметь обрабатывать следующие сценарии:
