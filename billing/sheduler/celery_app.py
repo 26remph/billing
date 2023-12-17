@@ -1,16 +1,16 @@
 from celery import Celery
 from kombu import Queue
 
-from billing.settings import DefaultSettings
+from billing.config.utils import get_settings
 
 
-settings = DefaultSettings()
+settings = get_settings()
 
 _name_ = "notify_celery"
 celapp = Celery(
     broker=settings.celery_broker,
     backend=settings.redis_dsn,
-    include=["notify.tasks.enrich", "notify.tasks.email"],
+    include=["billing.scheduler.clearing", "billing.scheduler.renewal"],
 )
 
 CELERY_CONFIG = {
