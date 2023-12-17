@@ -18,7 +18,7 @@ create_order_example = {
         "total": {"amount": 1560.0}
     },
     "currencyCode": "RUB",
-    "orderId": "c3073b9d-edd0-49f2-a28d-b7ded8ff9a8b",
+    "orderId": str(uuid.uuid4()),
     "redirectUrls": {"onError": yapay_cfg.redirect_on_error_url, "onSuccess": yapay_cfg.redirect_on_success_url},
 }
 

@@ -2,7 +2,10 @@ from enum import Enum
 from pydantic import BaseModel
 from pydantic_settings import BaseSettings
 
+from billing.config.default import YandexPaySettings
+from billing.config.utils import get_provider_settings
 from billing.provider.abstract import AbstractPayment
+from billing.provider.common import ProviderType
 from billing.provider.yapay.client import ApiClient
 from billing.schemas.yapay.operation import OperationResponse
 from billing.schemas.yapay.order.request import OrderRequest, CancelOrderRequest
@@ -15,7 +18,7 @@ class PaymentInfoType(str, Enum):
 
 
 class YandexPayment(AbstractPayment):
-    def __init__(self, api_key: str, endpoint_cfg: BaseSettings):
+    def __init__(self, api_key: str, endpoint_cfg: YandexPaySettings):
         super().__init__()
         self.client: ApiClient = ApiClient(api_key=api_key)
         self.endpoint_cfg = endpoint_cfg
@@ -23,7 +26,8 @@ class YandexPayment(AbstractPayment):
     async def create(
             self, model: OrderRequest, idempotency_key: str = None
     ) -> CreateOrderResponse:
-        url = self.endpoint_cfg.order_create_url
+        print(self.endpoint_cfg)
+        url = self.endpoint_cfg.order_url
         dump = model.model_dump(mode="json", exclude_none=True)
 
         async for session in self.client.get_http_session():

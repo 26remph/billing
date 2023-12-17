@@ -1,12 +1,13 @@
-import pprint
 import uuid
+from datetime import datetime
 from typing import Annotated
 
 from fastapi import APIRouter, Body, Depends, Path
+from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from billing.db.connection import get_session
-from billing.db.models import ItemQuantity, Item, Cart, Order
+from billing.db.models import Item, ItemQuantity, Cart, Order
 from billing.endpoints.examples.request import create_order_example
 from billing.endpoints.examples.webhook import webhook_example
 from billing.esb.common import BillingAction, BillingSignal
@@ -41,7 +42,7 @@ async def create(
     request_id = str(uuid.uuid4()) # get from header over nginx
     response = await provider.create(model=model, idempotency_key=request_id)
 
-    if response.status == 200:
+    if response.code == 200:
         items = []
         for item in model.cart.items:
             item_q_model = ItemQuantity(**dict(item.quantity.model_dump()))
@@ -87,18 +88,29 @@ async def webhook(
         или предоставлении доступа к фильму.
 
     """
-    if model.event == Event.ORDER_STATUS_UPDATED:
-        #  update database
 
-        # send signal in
+    # use for one stage billing processing
+    if model.event == Event.ORDER_STATUS_UPDATED:
+
+        #  select for update database
+        q = select(Order).where(Order.orderId == model.order.orderId).with_for_update()
+        db_order: Order = await session.scalar(q)
+        db_order.paymentStatus = model.order.paymentStatus
+        db_order.updated = datetime.utcnow()
+        await session.commit()
+
+        # send signal in auth service to get access for content
         if model.order.paymentStatus == PaymentStatus.CAPTURED:
-            cart_items = []
+            q = select(Item, Cart).join(Cart.items).where(Cart.id == db_order.cart_id)
+            result = await session.execute(q)
+            items_uuid = [str(row.productId) for row in result.scalars()]
             signal = BillingSignal(
                 user_id=str(uuid.uuid4()),  # get from token
-                cart_items=await session(...).get(model.order.orderId)
+                cart_items=items_uuid
             )
             await esb.emit(signal=signal, action=BillingAction.allow_access)
 
+    # use for two stage billing processing and partial refund
     if model.event == Event.OPERATION_STATUS_UPDATED:
         ...
 

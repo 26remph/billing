@@ -29,15 +29,8 @@ def get_app() -> FastAPI:
     description = "Микросервис, реализующий возможность оплаты услуг кинотеатра."
 
     tags_metadata = [
-        {"name": "Content", "description": "CRUD operation with content."},
-        {
-            "name": "Yandex provider",
-            "description": "Yandex pay provider workflow.",
-        },
-        {"name": "Mailing list", "description": "CRUD operation create mailing list for content."},
-        {"name": "Template", "description": "Work with template common vars."},
+        {"name": "Yandex provider", "description": "Yandex pay provider workflow."},
         {"name": "Health check", "description": "API health check."},
-        {"name": "Sender", "description": "Crete task on mailing letter"},
     ]
 
     application = FastAPI(
