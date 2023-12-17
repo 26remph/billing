@@ -1,7 +1,7 @@
 from celery import Celery
 from kombu import Queue
 
-from notify.settings import DefaultSettings
+from billing.settings import DefaultSettings
 
 
 settings = DefaultSettings()
