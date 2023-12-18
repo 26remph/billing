@@ -21,7 +21,6 @@ class YandexPayment(AbstractPayment):
         self.endpoint_cfg = endpoint_cfg
 
     async def create(self, model: OrderRequest, idempotency_key: str = None) -> CreateOrderResponse:
-        print(self.endpoint_cfg)
         url = self.endpoint_cfg.order_url
         dump = model.model_dump(mode="json", exclude_none=True)
 
