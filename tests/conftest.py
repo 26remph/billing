@@ -6,7 +6,7 @@ from asyncio import get_event_loop_policy
 import pytest
 from httpx import AsyncClient
 
-from billing.__main__ import get_app
+from billing.main import get_app
 
 
 @pytest.fixture(scope="session")
