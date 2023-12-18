@@ -37,16 +37,3 @@ class EsbBillingEmitter:
             print(f" [x] Sent {message!r}")
             print(f" [x] Sent body {message.body!r}")
 
-
-# async def main() -> None:
-#     # Perform connection
-#     # connection = await get_rabbit_connection()
-#     # esb_send = EsbBillingEmitter(connection)
-#     esb_send = await get_esb_services()
-#
-#     signal = BillingSignal(user_id="1212", cart_items=["123"])
-#     await esb_send.emit(signal=signal, action=BillingAction.allow_access)
-#
-# if __name__ == '__main__':
-#     cfg = get_settings()
-#     asyncio.run(main())
