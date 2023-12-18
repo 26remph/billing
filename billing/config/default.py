@@ -1,5 +1,5 @@
 from pydantic import HttpUrl, RedisDsn
-from pydantic_settings import BaseSettings
+from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
 class UkassaSettings(BaseSettings):
@@ -7,6 +7,8 @@ class UkassaSettings(BaseSettings):
 
 
 class YandexPaySettings(BaseSettings):
+    model_config = SettingsConfigDict(env_prefix="yapay_", env_file='.env', extra='ignore')
+
     order_url: str = "https://sandbox.pay.yandex.ru/api/merchant/v1/orders"
     order_info_url: str = "https://sandbox.pay.yandex.ru/api/merchant/v1/orders"
     order_cancel_suffix: str = "cancel"
@@ -22,14 +24,11 @@ class YandexPaySettings(BaseSettings):
     request_timeout: int = 10_000
     api_key: str = ...
 
-    merchant_id: str | None = ...
+    merchant_id: str = ...
     client_id: str | None = None
     callback_url: str | None = None
 
     webhook_url: str = "https://sandbox.example.merchant.ru/v1/webhook"
-
-    class Config:
-        env_prefix = 'yapay_'
 
 
 class DefaultSettings(BaseSettings):

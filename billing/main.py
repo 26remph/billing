@@ -60,7 +60,7 @@ admin.add_view(OperationAdmin)
 if __name__ == "__main__":  # pragma: no cover
     settings_for_application = get_settings()
     run(
-        "billing.__main__:app",
+        "billing.main:app",
         host=get_hostname(settings_for_application.app_host),
         port=settings_for_application.app_port,
         reload=True,

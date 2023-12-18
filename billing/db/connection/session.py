@@ -1,4 +1,4 @@
-from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine
+from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine, async_sessionmaker
 from sqlalchemy.orm import sessionmaker
 
 from billing.config import get_settings
@@ -17,8 +17,8 @@ class SessionManager:
             cls.instance = super(SessionManager, cls).__new__(cls)
         return cls.instance  # noqa
 
-    def get_session_maker(self) -> sessionmaker:
-        return sessionmaker(self.engine, class_=AsyncSession, expire_on_commit=False)
+    def get_session_maker(self) -> async_sessionmaker:
+        return async_sessionmaker(self.engine, class_=AsyncSession, expire_on_commit=False)
 
     def refresh(self) -> None:
         self.engine = create_async_engine(settings.database_uri, echo=settings.engine_mode_echo, future=True)
