@@ -118,6 +118,7 @@ async def webhook(
             await esb.emit(signal=signal, action=BillingAction.allow_access)
 
     # use for two stage billing processing and partial refund
+    # TODO add implementation code and manual test for two stage billing process
     if model.event == Event.OPERATION_STATUS_UPDATED:
         ...
 
