@@ -1,5 +1,6 @@
 import uuid
 from datetime import datetime
+from http import HTTPStatus
 from typing import Annotated
 
 from fastapi import APIRouter, Body, Depends, Path
@@ -42,7 +43,7 @@ async def create(
     request_id = str(uuid.uuid4())  # get from header over nginx
     response = await provider.create(model=model, idempotency_key=request_id)
 
-    if response.code == 200:
+    if response.code == HTTPStatus.OK:
         items = []
         for item in model.cart.items:
             item_q_model = ItemQuantity(**dict(item.quantity.model_dump()))
