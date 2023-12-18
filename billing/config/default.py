@@ -20,13 +20,16 @@ class YandexPaySettings(BaseSettings):
     redirect_on_success_url: str = "/success_page_url"
 
     request_timeout: int = 10_000
-    api_key: str = "70c84fd3-7024-4b3c-84a3-f1d9ae1b1243"
+    api_key: str = ...
 
-    merchant_id: str | None = "70c84fd3-7024-4b3c-84a3-f1d9ae1b1243"
+    merchant_id: str | None = ...
     client_id: str | None = None
     callback_url: str | None = None
 
     webhook_url: str = "https://sandbox.example.merchant.ru/v1/webhook"
+
+    class Config:
+        env_prefix = 'yapay_'
 
 
 class DefaultSettings(BaseSettings):

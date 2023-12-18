@@ -7,10 +7,7 @@ settings = get_settings()
 
 
 class SessionManager:
-    """
-    A class that implements the necessary functionality for working with the database:
-    issuing sessions, storing and updating connection settings.
-    """
+    """Database session manger."""
 
     def __init__(self) -> None:
         self.refresh()
